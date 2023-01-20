@@ -8,18 +8,20 @@ import { useState, useEffect } from "react";
 
 function PlanetCard(props) {
     let planeturl=props.planeturl
-    let planeindex=props.planetindex
     const [checked, setChecked] = useState();
     const [planetinfo, setplanetinfo]= useState([]);
+    const [planetuid, setplanetuid]= useState([]);
     
           useEffect(() => {
             fetch(planeturl)
             .then(response => response.json())
             .then(data =>{
               setplanetinfo(data.result.properties)
+              setplanetuid(data.result.uid)
             })
           }, [planeturl] )
 
+      const planetlink = "/planet/"+planetuid
   return (
     <Card style={{ width: '18rem' }}>
       <Card.Img variant="top" src={swlogo} />
@@ -30,7 +32,7 @@ function PlanetCard(props) {
           Terrain: {planetinfo.terrain}
         </Card.Text>
         
-        <Button variant="outline-primary">Learn More!</Button>
+        <Button variant="outline-primary" href={planetlink}>Learn More!</Button>
         <ToggleButton
         className="mb-2 mx-2 float-end"
         width="16"

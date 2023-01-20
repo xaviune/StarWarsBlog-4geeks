@@ -9,15 +9,17 @@ import { useState, useEffect } from "react";
 function CharacterCard(props) {
     const [checked, setChecked] = useState();
     const [characterinfo, setcharacterinfo]= useState([]);
+    const [characteruid, setcharacteruid]= useState([]);
     let characterurl=props.characterurl
           useEffect(() => {
             fetch(characterurl)
             .then(response => response.json())
             .then(data =>{
               setcharacterinfo(data.result.properties)
+              setcharacteruid(data.result.uid)
             })
           }, [characterurl] )
-
+    const characterlink = "/person/"+characteruid
   return (
     <Card style={{ width: '18rem' }}>
       <Card.Img variant="top" src={swlogo} />
@@ -29,7 +31,7 @@ function CharacterCard(props) {
           Eye color: {characterinfo.eye_color}
         </Card.Text>
         
-        <Button variant="outline-primary">Learn More!</Button>
+        <Button variant="outline-primary" href={characterlink}>Learn More!</Button>
         <ToggleButton
         className="mb-2 mx-2 float-end"
         width="16"
