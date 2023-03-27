@@ -1,32 +1,28 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import CharacterCard from "./charactercard.jsx";
-import { useState,useEffect } from "react";
 import Table from 'react-bootstrap/Table';
+import { Context } from "../store/appContext";
 
 export const ChararacterTable = () => {
-		const [CharacterList, setCharacterList] = useState([])
+	const { store, actions } = useContext(Context);
 
 	useEffect(() => {
-		fetch(`https://www.swapi.tech/api/people`)
-		.then(response => response.json())
-		.then(data =>{
-			setCharacterList(data.results)
-			{/* console.log(data)*/}
-		})
-	}, [] )
+		actions.loadCharacters();
+	}, []);
+
 	return (
 		<>
 		<Table responsive>
       <thead>
         <tr >
-		{CharacterList.map ((character) => (
+		{store.characterList.map ((character) => (
 			<th key={character.uid}>{character.name}</th>
 		))}
         </tr>
       </thead>
       <tbody>
 	  <tr key={1}>
-		{CharacterList.map ((character, index) => (
+		{store.characterList.map ((character, index) => (
 			<td key={index}>
 				<CharacterCard characterurl={character.url}/>
 			</td>
@@ -36,6 +32,5 @@ export const ChararacterTable = () => {
       </tbody>
     </Table>
 		</>
-		
 	);
 };

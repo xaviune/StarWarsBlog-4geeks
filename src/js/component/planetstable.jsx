@@ -1,32 +1,28 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import PlanetCard from "./planetcard.jsx";
-import { useState,useEffect } from "react";
 import Table from 'react-bootstrap/Table';
+import { Context } from "../store/appContext";
 
 export const PlanetTable = () => {
-	const [PlanetList, setPlanetList] = useState([])
+	const { store, actions } = useContext(Context);
 
 	useEffect(() => {
-		fetch(`https://www.swapi.tech/api/planets`)
-		.then(response => response.json())
-		.then(data =>{
-			setPlanetList(data.results)
-			{/*console.log(data)*/}
-		})
-	}, [] )
+		actions.loadPlanets();
+	}, []);
+
 	return (
 		<>
 		<Table responsive>
       <thead>
         <tr >
-		{PlanetList.map ((planet) => (
+		{store.planetList.map ((planet) => (
 			<th key={planet.uid}>{planet.name}</th>
 		))}
         </tr>
       </thead>
       <tbody>
 	  <tr key={1}>
-		{PlanetList.map ((planet, index) => (
+		{store.planetList.map ((planet, index) => (
 			<td key={index}>
 				<PlanetCard planeturl={planet.url} planetindex={index}/>
 			</td>
